@@ -2299,9 +2299,6 @@ int remap_vmalloc_range_partial(struct vm_area_struct *vma, unsigned long uaddr,
 	unsigned long off;
 	unsigned long end_index;
 
-	if (check_shl_overflow(pgoff, PAGE_SHIFT, &off))
-		return -EINVAL;
-
 	size = PAGE_ALIGN(size);
 
 	if (!PAGE_ALIGNED(uaddr) || !PAGE_ALIGNED(kaddr))
