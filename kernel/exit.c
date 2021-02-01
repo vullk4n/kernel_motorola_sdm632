@@ -805,7 +805,7 @@ void __noreturn do_exit(long code)
 		pr_alert("Fixing recursive fault but reboot is needed!\n");
 #endif
 
-		futex_exit_done(tsk);
+		futex_exit_recursive(tsk);
 		set_current_state(TASK_UNINTERRUPTIBLE);
 		schedule();
 	}
@@ -818,17 +818,6 @@ void __noreturn do_exit(long code)
 	if (tsk->flags & PF_SU) {
 		su_exit();
 	}
-
-	/*
-	 * Ensure that all new tsk->pi_lock acquisitions must observe
-	 * PF_EXITING. Serializes against futex.c:attach_to_pi_owner().
-	 */
-	smp_mb();
-	/*
-	 * Ensure that we must observe the pi_state in exit_mm() ->
-	 * mm_release() -> exit_pi_state_list().
-	 */
-	raw_spin_unlock_wait(&tsk->pi_lock);
 
 	/* sync mm's RSS info before statistics gathering */
 	if (tsk->mm)
