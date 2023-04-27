@@ -35,6 +35,14 @@
 				fsmgr_flags = "wait,slotselect";
 				status = "ok";
 			};
+			system_ext {
+				compatible = "android,system_ext";
+				dev = "/dev/block/platform/soc/7824900.sdhci/by-name/oem";
+				type = "squashfs";
+				mnt_flags = "ro,barrier=1,discard";
+				fsmgr_flags = "wait,slotselect";
+				status = "ok";
+			};
 			system {
 				status = "disabled";
 			};
